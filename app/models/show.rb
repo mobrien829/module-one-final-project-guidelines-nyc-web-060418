@@ -3,8 +3,12 @@ class Show < ActiveRecord::Base
   has_many :users, through: :likedshows
 
 
-  def display_users
-    show_users_selector.collect {|liked_show| liked_show.user.username}
+  def display_users(sent_from_user = nil)
+    arr = show_users_selector.collect {|liked_show| liked_show.user.username}
+    puts "Media title: '#{self.title}'"
+    arr = arr.uniq
+    arr.delete(sent_from_user.username)
+    puts arr
   end
 
   def count_fans
