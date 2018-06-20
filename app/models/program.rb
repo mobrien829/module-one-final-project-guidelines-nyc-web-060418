@@ -1,18 +1,31 @@
 require_relative '../../config/environment'
+require 'pry'
 
 class Program
 
-  attr_accessor :user
+  attr_accessor :user, :onoff
+
+  def initialize
+    @onoff = nil
+  end
 
   def greeting
     puts "Hello! Welcome to Isaac Fiore and Michael O'Brien's application!"
   end
 
+  def exit_message
+    puts "Goodbye!"
+  end
+
   def start
+    @onoff = 1
     greeting
     login
-    display_options
-    option_selector
+    while @onoff == 1
+      display_options
+      option_selector
+    end
+    exit_message
   end
 
   def login
@@ -54,7 +67,24 @@ class Program
       show = get_user_input
       id = Show.find_by(title: sanitize_user_input(show)).id
       self.user.like_show(id)
-
+    when "2"
+      puts "Please enter the name of the show/movie you'd like to become a hater of."
+      show = get_user_input
+      id = Show.find_by(title: sanitize_user_input(show)).id
+      self.user.dislike_show(id)
+    when "3"
+      puts "Under Construction"
+    when "4"
+      puts "Here are other people with similar interests!"
+      self.user.find_friends
+    when "5"
+      puts Show.all.collect {|show| show.title}
+    when "6"
+      puts self.user.likedshows.collect {|liked_show| liked_show.show.title}
+    when "7"
+      self.logout
+      @onoff = 0
+    end
 
   end
 

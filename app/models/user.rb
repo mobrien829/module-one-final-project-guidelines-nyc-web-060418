@@ -4,7 +4,7 @@ class User < ActiveRecord::Base
 
   def like_show(show_id)
     if Show.check_if_exists_id(show_id)
-      like = Likedshow.create(user_id: self.id, show_id: show_id, polarity: true)
+      like = Likedshow.find_or_create_by(show_id: show_id, user_id: self.id, polarity: true)
     else
       puts "Sorry! That show does not exist in our database, please add it first."
     end
@@ -12,20 +12,16 @@ class User < ActiveRecord::Base
 
   def dislike_show(show_id)
     if Show.check_if_exists_id(show_id)
-      dislike = Likedshow.create(user_id: self.id, show_id: show_id, polarity: false)
+      dislike = Likedshow.find_or_create_by(show_id: show_id, user_id: self.id, polarity: false)
     else
       puts "Sorry! That show does not exist in our database, please add it first."
     end
   end
 
   def find_friends
-    all_liked_shows.each {|show| show.display_users(self)}
+    self.likedshows.each {|liked_show| liked_show.show.display_users(self)}
   end
 
-  def all_liked_shows
-    arr = Likedshow.all.select {|liked_show| liked_show.user_id == self.id && liked_show.polarity == true}
-    arr.collect {|liked_show| liked_show.show}
-  end
 
   def add_show(query_title) #query_title should be sanitized prior to method call
     if Show.find_by(title: query_title) == nil
@@ -33,6 +29,12 @@ class User < ActiveRecord::Base
     else
       puts "This show, #{query_title}, already exists! Thank you anyway :^)."
     end
+  end
+
+  def self.sanitize_array_of_users_return_only_names(array)
+    array.delete(nil)
+    return_array = array.collect {|user| user.username}
+    return_array
   end
 
 

@@ -31,6 +31,12 @@ class Show < ActiveRecord::Base
     end
   end
 
+  def self.sanitize_array_of_shows_return_only_names(array)
+    array.delete(nil)
+    return_array = array.collect {|show| show.title}
+    return_array
+  end
+
   private
 
   def show_users_selector
