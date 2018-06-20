@@ -23,7 +23,7 @@ class User < ActiveRecord::Base
     if Show.find_by(title: query_title) == nil
       Show.create(title: query_title)
     else
-      puts "This show, #{query_title}, already exists! Thank you."
+      puts "This show, #{query_title}, already exists! Thank you anyway :^)."
     end
   end
 
