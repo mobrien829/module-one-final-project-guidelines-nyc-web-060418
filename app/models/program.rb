@@ -53,6 +53,7 @@ class Program
     puts "6 - All shows that you've liked"
     puts "7 - Logout and exit"
     puts "8 - Add show to database"
+    puts "9 - Delete show from database"
   end
 
   def get_user_input
@@ -94,6 +95,14 @@ class Program
       title_input = get_user_input
       sani_title = sanitize_user_input(title_input)
       Show.find_or_create_by(title: sani_title)
+    when "9"
+      puts "Enter show to delete"
+      title_input = get_user_input
+      sani_title = sanitize(user_input(title_input))
+      # need show's primary key
+      show_to_destroy = Show.find_by(title: sani_title)
+      show_primary_key = show_to_destroy.id
+      Show.destroy(show_primary_key)
     end
 
   end
