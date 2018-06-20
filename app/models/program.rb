@@ -54,7 +54,8 @@ class Program
       show = get_user_input
       id = Show.find_by(title: sanitize_user_input(show)).id
       self.user.like_show(id)
-    end
+
+
   end
 
   # private

@@ -3,11 +3,19 @@ class User < ActiveRecord::Base
   has_many :shows, through: :likedshows
 
   def like_show(show_id)
-    like = Likedshow.create(user_id: self.id, show_id: show_id, polarity: true)
+    if Show.check_if_exists_id(show_id)
+      like = Likedshow.create(user_id: self.id, show_id: show_id, polarity: true)
+    else
+      puts "Sorry! That show does not exist in our database, please add it first."
+    end
   end
 
   def dislike_show(show_id)
-    dislike = Likedshow.create(user_id: self.id, show_id: show_id, polarity: false)
+    if Show.check_if_exists_id(show_id)
+      dislike = Likedshow.create(user_id: self.id, show_id: show_id, polarity: false)
+    else
+      puts "Sorry! That show does not exist in our database, please add it first."
+    end
   end
 
   def find_friends
