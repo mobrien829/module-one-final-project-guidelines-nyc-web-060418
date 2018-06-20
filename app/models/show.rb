@@ -15,6 +15,22 @@ class Show < ActiveRecord::Base
     select_users_who_like_show.length
   end
 
+  # title_string must be sanitized before using this method
+
+  def self.check_if_exists_title(title_string)
+    if self.all.find_by(title: title_string)
+      true
+    else false
+    end
+  end
+
+  def self.check_if_exists_id(id_int)
+    if self.all.find_by(id: id_int)
+      true
+    else false
+    end
+  end
+
   private
 
   def show_users_selector
@@ -25,6 +41,5 @@ class Show < ActiveRecord::Base
     show_users_selector.select {|liked_show| liked_show.polarity == true}
   end
 
-  
 
 end
