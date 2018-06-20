@@ -31,11 +31,7 @@ class Program
   def login
     puts "Please enter your username"
     name = STDIN.gets.chomp
-    if User.find_by(username: name) == nil
-      @user = User.create(username: name)
-    else
-      @user = User.find_by(username: name)
-    end
+    User.find_or_create_by(username: name)
   end
 
   def logout
@@ -64,19 +60,15 @@ class Program
     case input
     when "1"
       puts "Please enter the name of the show/movie you'd like to become a fan of."
-      show = get_user_input
-      id = Show.find_by(title: sanitize_user_input(show)).id
+      id = Show.find_by(title: sanitize_user_input(get_user_input)).id
       self.user.like_show(id)
     when "2"
       puts "Please enter the name of the show/movie you'd like to become a hater of."
-      show = get_user_input
-      id = Show.find_by(title: sanitize_user_input(show)).id
+      id = Show.find_by(title: sanitize_user_input(get_user_input)).id
       self.user.dislike_show(id)
     when "3"
       puts "Enter title of the show you want to update"
-      input = get_user_input
-      sani_input = sanitize_user_input(input)
-      selected_show = Show.where(title: sani_input).first
+      selected_show = Show.where(title: sanitize_user_input(get_user_input)).first
       self.info_update_menu
       self.info_update_selector(selected_show)
     when "4"
@@ -91,9 +83,7 @@ class Program
       @onoff = 0
     when "8"
       puts "Enter show name here"
-      title_input = get_user_input
-      sani_title = sanitize_user_input(title_input)
-      Show.find_or_create_by(title: sani_title)
+      Show.find_or_create_by(title: sanitize_user_input(get_user_input))
     else
       puts "Sorry! That was an invalid input."
     end
