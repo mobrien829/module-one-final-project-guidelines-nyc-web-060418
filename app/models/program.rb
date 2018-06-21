@@ -109,6 +109,9 @@ class Program
             sani_title = sanitize_user_input(get_user_input)
             selected_show.title = sani_title
             selected_show.save
+          when "4"
+
+          else puts "Sorry, that is an invalid command."
         end
       end
 
@@ -116,6 +119,7 @@ class Program
             puts "1 - Add/update genre"
             puts "2 - Add/update medium"
             puts "3 - Add/update title"
+            puts "4 - Return to main menu"
           end
 
   # private
