@@ -50,6 +50,7 @@ class Program
     puts "6 - All shows that you've liked"
     puts "7 - Logout and exit"
     puts "8 - Add show to database"
+    puts "9 - Search show or user database"
   end
 
   def get_user_input
@@ -85,13 +86,18 @@ class Program
     when "8"
       puts "Enter show name here"
       Show.find_or_create_by(title: sanitize_user_input(get_user_input))
+    when "9"
+      puts "Enter search option here (User, Media, Genre)"
+      input = sanitize_user_input(get_user_input)
+      self.search_option_selector(input)
+      # placeholder for search
     else
       puts "Sorry! That was an invalid input."
     end
 
   end
 
-
+# menu option 3 menu and selector
       def info_update_selector(selected_show)
         input = get_user_input
         case input
@@ -122,12 +128,40 @@ class Program
             puts "4 - Return to main menu"
           end
 
+
+    # menu 9 options and selector
+    def search_option_selector(input)
+      case input
+      when "Genre"
+        puts "Enter genre"
+        search_term = search_input
+        shows = Show.all.select{|show| show.genre == search_term}
+        puts shows.collect{|show| show.title}
+      when "User"
+        puts "Enter user name. This will return the names of all shows a user liked."
+        search_term = search_input
+        found_user = User.all.find_by(username: search_term)
+        liked_show_array = found_user.likedshows.select {|liked_show| liked_show.polarity == true}
+        puts liked_show_array.collect {|likedshow| likedshow.show.title}
+      when "Media"
+        puts "Enter show media"
+        search_term = search_input
+        shows = Show.all.select{|show| show.media == search_term}
+        puts shows.collect {|show| show.title}
+      else puts "That is not a valid command."
+      end
+    end
+
   # private
 
   def sanitize_user_input(user_input)
     split_input = user_input.split(" ")
     capitalized_input = split_input.collect {|word| word.capitalize}
     capitalized_input.join(" ")
+  end
+
+  def search_input
+    sanitize_user_input(get_user_input)
   end
 
 end
