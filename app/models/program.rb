@@ -48,9 +48,10 @@ class Program
     puts "4 - Find other users who like your shows"
     puts "5 - All shows"
     puts "6 - All shows that you've liked"
-    puts "7 - Logout and exit"
-    puts "8 - Add show to database"
-    puts "9 - Search show or user database"
+    puts "7 - All shows that you've disliked"
+    puts "8 - Search show or user database"
+    puts "9 - Add show to database"
+    puts "10 - Logout and exit"
   end
 
   def get_user_input
@@ -79,18 +80,22 @@ class Program
     when "5"
       puts Show.all.collect {|show| show.title}
     when "6"
-      puts self.user.likedshows.collect {|liked_show| liked_show.show.title}
+      likedshows_i_like = Likedshow.all.select {|liked_show| liked_show.user_id == @user.id && liked_show.polarity}
+      puts likedshows_i_like.collect {|liked_show| liked_show.show.title}
     when "7"
-      self.logout
-      @onoff = 0
+      likedshows_i_dislike = Likedshow.all.select {|liked_show| liked_show.user_id == @user.id && !liked_show.polarity}
+      puts likedshows_i_dislike.collect {|liked_show| liked_show.show.title}
     when "8"
-      puts "Enter show name here"
-      Show.find_or_create_by(title: sanitize_user_input(get_user_input))
-    when "9"
       puts "Enter search option here (User, Media, Genre)"
       input = sanitize_user_input(get_user_input)
       self.search_option_selector(input)
       # placeholder for search
+    when "9"
+      puts "Enter show name here"
+      Show.find_or_create_by(title: sanitize_user_input(get_user_input))
+    when "10"
+      self.logout
+      @onoff = 0
     else
       puts "Sorry! That was an invalid input."
     end
