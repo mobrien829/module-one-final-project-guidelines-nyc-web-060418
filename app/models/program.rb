@@ -97,19 +97,16 @@ class Program
         case input
           when "1"
             puts "Enter genre"
-            new_info = get_user_input
-            sani_info = sanitize_user_input(new_info)
+            sani_info = sanitize_user_input(get_user_input)
             selected_show.genre = sani_info
             selected_show.save
           when "2"
-            puts "Enter any additional details here"
-            new_info = get_user_input
-            selected_show.details = new_info
+            puts "Enter media (Show, Movie, or Animated) here"
+            selected_show.media = sanitize_user_input(get_user_input)
             selected_show.save
           when "3"
             puts "Enter updated title"
-            new_title = get_user_input
-            sani_title = sanitize_user_input(new_title)
+            sani_title = sanitize_user_input(get_user_input)
             selected_show.title = sani_title
             selected_show.save
         end
