@@ -24,6 +24,7 @@ class Program
     while @onoff == 1
       display_options
       option_selector
+      sleep(2)
     end
     exit_message
   end
@@ -31,7 +32,7 @@ class Program
   def login
     puts "Please enter your username"
     name = STDIN.gets.chomp
-    User.find_or_create_by(username: name)
+    @user = User.find_or_create_by(username: name)
   end
 
   def logout
@@ -116,7 +117,7 @@ class Program
 
           def info_update_menu
             puts "1 - Add/update genre"
-            puts "2 - Add/update details"
+            puts "2 - Add/update medium"
             puts "3 - Add/update title"
           end
 
