@@ -4,11 +4,11 @@ class Show < ActiveRecord::Base
 
 
   def display_users(sent_from_user = nil)
-    arr = show_users_selector.collect {|liked_show| liked_show.user.username}
+    arr = show_users_selector.collect {|liked_show| [liked_show.user.username, liked_show.polarity]}
     puts "Media title: '#{self.title}'"
     arr = arr.uniq
-    arr.delete(sent_from_user.username)
-    puts arr
+    arr.delete([sent_from_user.username, true || false])
+    arr.each {|usernames, likeorno| puts "#{usernames}, Likes show: #{likeorno}"}
   end
 
   def count_fans

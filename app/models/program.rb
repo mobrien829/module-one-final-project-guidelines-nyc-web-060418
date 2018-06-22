@@ -63,11 +63,19 @@ class Program
     case input
     when "1"
       puts "Please enter the name of the show/movie you'd like to become a fan of."
-      id = Show.find_by(title: sanitize_user_input(get_user_input)).id
+      user_input_string = sanitize_user_input(get_user_input)
+      if Show.find_by(title: user_input_string) == nil
+        Show.create(title: user_input_string)
+      end
+      id = Show.find_by(title: user_input_string).id
       self.user.like_show(id)
     when "2"
       puts "Please enter the name of the show/movie you'd like to become a hater of."
-      id = Show.find_by(title: sanitize_user_input(get_user_input)).id
+      user_input_string = sanitize_user_input(get_user_input)
+      if Show.find_by(title: user_input_string) == nil
+        Show.create(title: user_input_string)
+      end
+      id = Show.find_by(title: user_input_string).id
       self.user.dislike_show(id)
     when "3"
       puts "Enter title of the show you want to update"
